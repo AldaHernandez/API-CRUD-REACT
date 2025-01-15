@@ -5,13 +5,14 @@ import Home from "./Pages/Home"
 import Register from "./Pages/Auth/Register"
 import Login from "./Pages/Auth/Login"
 import { AppContext } from "./Context/AppContext"
-import { useContext } from "react"
+import { useContext, useState } from "react"
 import Create from "./Pages/Posts/Create"
 import Show from "./Pages/Posts/Show"
 import Update from "./Pages/Posts/Update"
 
 export default function App() {
   const { user } = useContext(AppContext);
+  const [isRegistering, setIsRegistering] = useState(false);
 
   return (
     // Creando la estructura de enrutamiento para la navegación de la aplicación
@@ -20,7 +21,8 @@ export default function App() {
         <Route path="/" element={<Layout/>}>
           <Route index element={<Home/>}/>
           
-          <Route path="/register" element={ user ? <Home/> : <Register/>}/>
+          <Route path="/register" element={ user && !isRegistering ? <Home/> : <Register setIsRegistering={setIsRegistering}/>}/>
+  
           <Route path="/login" element={user ? <Home/> :<Login/>}/>
 
           <Route path="/create" element={user ? <Create/> :<Login/>}/>

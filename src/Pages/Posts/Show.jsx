@@ -47,7 +47,7 @@ export default function Show() {
         }, []);
 
     return (
-      <>    
+      <div className="w-full md:w-1/2 lg:w-1/2 xl:w-1/2 sm:w-4/5 mx-auto">    
         {post ? ( 
           <div key={post.id} className="mt-4 p-4 border rounded-md border-dashed border-slate-400">
             <div className="mb-2 flex items-start justify-between">
@@ -58,8 +58,8 @@ export default function Show() {
             </div>
             <p>{post.body}</p>
 
-            {user && user.id === post.user_id && <div className="flex items-center justify-end gap-4">
-              <Link to={`/posts/update/${post.id}`} className="bg-green-500 text-white text-sm rounded-lg px-3 py-1">Actualizar</Link>
+            {user && user.id === post.user_id && <div className="mt-2 flex items-center justify-end gap-4">
+              <Link to={`/posts/update/${post.id}`} className="bg-green-500 text-white text-sm rounded-lg px-3 py-1">Editar</Link>
 
               <form onSubmit={handleDelete}>
                 <button className="bg-red-500 text-white text-sm rounded-lg px-3 py-1">
@@ -71,6 +71,6 @@ export default function Show() {
         ) : ( 
         <p>Post no encontrado</p>
         )}
-      </>
+      </div>
     );
 }

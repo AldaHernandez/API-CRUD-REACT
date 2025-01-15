@@ -1,8 +1,9 @@
 import { useContext, useState } from "react"
 import { useNavigate } from "react-router-dom";
 import { AppContext } from "../../Context/AppContext";
+import { Snackbar, Alert } from '@mui/material';
 
-export default function Register () {
+export default function Register ({ setIsRegistering}) {
 
     const {setToken} = useContext(AppContext);
     const navigate = useNavigate();
@@ -15,9 +16,13 @@ export default function Register () {
     });
 
     const [errors, setErrors] = useState({});
+    const [successMessage, setSuccessMessage] = useState('');
+    const [open, setOpen] = useState(false);
 
     async function handleRegister(e) {
         e.preventDefault();
+
+        setIsRegistering(true);
 
         // Se realiza la petición HTTP al endpoint de nuestra API (únicamente se pone la ruta específica porque en el archivo vite.config.js ya se definió cuál es la ruta del servidor)
         const res = await fetch('/api/register', {
@@ -29,17 +34,38 @@ export default function Register () {
 
         if (data.errors) {
             setErrors(data.errors);
+            setSuccessMessage('');
+            setIsRegistering(false);
         } else {
             localStorage.setItem("token", data.plainTextToken);
             setToken(data.plainTextToken);
-            navigate('/');
+            setSuccessMessage('¡Registro exitoso!');
+            setErrors({});
+            setOpen(true); // Abre el Snackbar
+            setTimeout(() => {
+                setIsRegistering(false);
+                navigate('/');
+            }, 3000); // Redirige después de 3 segundos
             console.log(data);
         }
     }
 
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpen(false);
+    };
+
     return (
       <>
           <h1 className="title">Registra una cuenta nueva</h1>
+
+          <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                {successMessage}
+            </Alert>
+          </Snackbar>
 
           <form onSubmit={handleRegister} className="w-1/2 mx-auto space-y-6">
             <div>
