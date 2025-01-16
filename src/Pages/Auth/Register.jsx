@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { AppContext } from "../../Context/AppContext";
 import { Snackbar, Alert } from '@mui/material';
 
-export default function Register ({ setIsRegistering}) {
+export default function Register ({ setIsRegistering }) {
 
     const {setToken} = useContext(AppContext);
     const navigate = useNavigate();
@@ -59,7 +59,9 @@ export default function Register ({ setIsRegistering}) {
 
     return (
       <>
-          <h1 className="title">Registra una cuenta nueva</h1>
+        <div className="w-11/12 mx-auto">
+            <h1 className="title">Registra una cuenta nueva</h1>
+        </div>
 
           <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
             <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
@@ -67,7 +69,7 @@ export default function Register ({ setIsRegistering}) {
             </Alert>
           </Snackbar>
 
-          <form onSubmit={handleRegister} className="w-1/2 mx-auto space-y-6">
+          <form onSubmit={handleRegister} className="w-10/12 md:w-1/2 lg:w-1/2 xl:w-1/2 sm:w-4/5 mx-auto space-y-6">
             <div>
                 <input type="text" placeholder="Nombre" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value})}/>
                 {errors.name && <p className="error">{errors.name}</p>}

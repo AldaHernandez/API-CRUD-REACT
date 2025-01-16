@@ -1,8 +1,9 @@
 import { useContext, useState } from "react"
 import { useNavigate } from "react-router-dom";
 import { AppContext } from "../../Context/AppContext";
+import { Snackbar, Alert } from "@mui/material";
 
-export default function Login () {
+export default function Login ({ setIsLogginIn }) {
 
     const {setToken} = useContext(AppContext);
     const navigate = useNavigate();
@@ -13,6 +14,9 @@ export default function Login () {
     });
 
     const [errors, setErrors] = useState({});
+    const [successMessage, setSuccessMessage] = useState('');
+    const [open, setOpen] = useState(false);
+
 
     async function handleLogin(e) {
         e.preventDefault();
@@ -29,10 +33,17 @@ export default function Login () {
 
         if (data.errors) {
             setErrors(data.errors);
+            setSuccessMessage('');
         } else {
             localStorage.setItem("token", data.plainTextToken);
             setToken(data.plainTextToken);
-            navigate('/');
+            setSuccessMessage('¡Inicio de sesión exitoso!');
+            setOpen(true);
+            setIsLogginIn(true);
+            setTimeout(() => {
+                setIsLogginIn(false);
+                navigate('/');
+            }, 3000); // Redirige después de 3 segundos
         }
     }
 
@@ -40,7 +51,13 @@ export default function Login () {
       <>
           <h1 className="title">Inicia sesión</h1>
 
-          <form onSubmit={handleLogin} className="w-1/2 mx-auto space-y-6">
+          <Snackbar open={open} autoHideDuration={3000}>
+            <Alert severity="success" sx={{width: '100%'}}>
+                {successMessage}
+            </Alert>
+          </Snackbar>
+
+          <form onSubmit={handleLogin} className="w-10/12 md:w-1/2 lg:w-1/2 xl:w-1/2 sm:w-4/5 mx-auto space-y-6">
             <div>
                 <input type="text" placeholder="Email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value})}/>
                 {errors.email && <p className="error">{errors.email}</p>}

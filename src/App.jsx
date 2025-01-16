@@ -13,6 +13,7 @@ import Update from "./Pages/Posts/Update"
 export default function App() {
   const { user } = useContext(AppContext);
   const [isRegistering, setIsRegistering] = useState(false);
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
 
   return (
     // Creando la estructura de enrutamiento para la navegación de la aplicación
@@ -23,7 +24,7 @@ export default function App() {
           
           <Route path="/register" element={ user && !isRegistering ? <Home/> : <Register setIsRegistering={setIsRegistering}/>}/>
   
-          <Route path="/login" element={user ? <Home/> :<Login/>}/>
+          <Route path="/login" element={user && !isLoggingIn ? <Home/> :<Login setIsLogginIn={setIsLoggingIn} />}/>
 
           <Route path="/create" element={user ? <Create/> :<Login/>}/>
 
