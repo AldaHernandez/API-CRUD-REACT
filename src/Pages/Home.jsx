@@ -20,7 +20,7 @@ export default function Home () {
   }, []);
 
   return (
-    <div className="w-full md:w-1/2 lg:w-1/2 xl:w-1/2 sm:w-4/5 mx-auto">
+    <div className="w-11/12 md:w-1/2 lg:w-1/2 xl:w-1/2 sm:w-4/5 mx-auto">
         <h1 className="title">Últimos posts</h1>
 
         {posts.length > 0 ? posts.map((post) => (
